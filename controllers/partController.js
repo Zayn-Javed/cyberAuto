@@ -93,7 +93,7 @@ let findPart = async (req,res)=>{
 
 let searchPart = async (req,res)=>{
     try {
-      const { make, partType, description, price } = req.query;
+      const { make, partType, description, price } = req.body;
   
       // Construct a search query based on the provided parameters
       const searchQuery = {};

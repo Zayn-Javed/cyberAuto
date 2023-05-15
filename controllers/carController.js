@@ -96,40 +96,11 @@ let findCar = async (req,res)=>{
 }
 
 
-let searchCar = async (req,res)=>{
-    try {
-      const { make, year, model, description, price } = req.query;
-  
-      // Construct a search query based on the provided parameters
-      const searchQuery = {};
-      if (make) {
-        searchQuery.make = { $regex: make, $options: 'i' };
-      }
-      if (year) {
-        searchQuery.year = { $regex: year, $options: 'i' };
-      }
-      if (model) {
-        searchQuery.model = { $regex: model, $options: 'i' };
-      }
-      if (description) {
-        searchQuery.$text = { $search: description };
-      }
-      if (price) {
-        searchQuery.price = { $gte: parseFloat(price) };
-      }
-      // Perform the search using the constructed query
-      const cars = await carModel.find(searchQuery);
-      res.status(200).json(cars);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to search for cars' });
-    }
-}
-  
+
 
 
 module.exports = {
     addCar,
-    searchCar,
     viewCar,
     upload,
     deleteCar,
