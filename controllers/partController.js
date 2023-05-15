@@ -38,7 +38,7 @@ const storage = multer.diskStorage({
 
 
 const filter = (req , file , cb)=>{
-    if(file.mimetype == 'application/pdf'){
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
         cb(null , true)
     }else{
         cb(new Error("UnSupported file") , false)
