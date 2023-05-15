@@ -23,6 +23,7 @@ let isUser=(req,res,next)=>{
 }
 
 module.exports = {
-    isUser,isEmployeer,isStudent,isOfficer
+    isUser,
+    isAdmin
 }
  

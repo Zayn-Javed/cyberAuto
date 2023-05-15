@@ -25,6 +25,6 @@ const partSchema = new mongoose.Schema({
     timestamps:true
 })
 
-consPart = mongoose.model('Part', partSchema);
+PartModel = mongoose.model('Part', partSchema);
 
-module.exports = Part;
+module.exports = PartModel;

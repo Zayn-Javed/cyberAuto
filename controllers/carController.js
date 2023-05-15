@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken")
 const carModel = require('../models/carModel');
+const multer = require ('multer')
+const { param } = require("../routes/userRoute");
 
 
 let addCar = (req,res)=>{
