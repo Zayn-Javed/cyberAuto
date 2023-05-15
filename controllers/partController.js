@@ -1,25 +1,33 @@
 const jwt = require("jsonwebtoken")
-const appModel = require('../models/jobapplicationModel');
-const { param } = require("../routes/userRoute");
-const jobModel = require('../models/jobModel');
-const multer = require ('multer')
+const carModel = require('../models/carModel');
 
-let applyJob = (req,res)=>{
-    let userId= req.decoded.id
-    let jobId= req.params.id
-    let {covermessage} = req.body;
-    let appliaction=new appModel({
-        userId,
-        jobId,
-        covermessage,
-        resume: req.files.map(file => file.path)
-    });
-    appliaction.save().then((appliaction)=>{
-        res.status(200).json({"message":"job successfully applied", appliaction:appliaction})
+
+let addPart = (req,res)=>{
+
+    let {make, model, year, price, carType, engine, engineType, description} = req.body
+    let car=new carModel({
+        make, 
+        model, 
+        year, 
+        price,
+        carType, 
+        engine, 
+        engineType, 
+        Image: req.files.map(file => file.path),
+        description,
+    })
+    car.save().then( (car)=>{
+        if(!car){
+            res.status(400).json( { "message":"Part cannot be added"})
+        }else{
+            res.status(200).json({"message":"success", "car": car})
+        }
     }).catch(err=>{
-        res.status(400).json({err:err, "message":"job cannot be applied"})
+        console.log(err)
+        res.status(400).json( { "message":"Part cannot be added"})
     })
 }
+
 
 
 const storage = multer.diskStorage({
@@ -48,61 +56,64 @@ const upload = multer({
 })
 
 
-let viewApplication = (req, res)=>{
-    jobModel.find({employeerId: req.decoded.id}).then((allJobs)=>{
-        var result = []
-        appModel.find().then(data => {
-            
-            for (let index = 0; index < allJobs.length; index++) {
-                const element = allJobs[index];
-                for (let index1 = 0; index1 < data.length; index1++) {
-                    const element2 = data[index1];
-                    if (element2.jobId!=null) {
-                        if (element._id.toString()==element2.jobId.toString()) {
-                            result.push(element2)
-                        }    
-                    }
-                    
-                }
-            }
-        res.send(result);
-        })
-        .catch(err => {
-        res.status(500).send({
-            message:
-            err.message || "Some error occurred while retrieving applications."
-        });
-        });
-    })
-    
+let viewPart = async (req,res)=>{
+    try {
+        const cars = await carModel.find();
+        res.json(cars);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to retrieve cars' });
+    }
 }
 
 
-let updateApplicationStatus= (req,res)=>{
-    let status = req.body.status;
-    let applicationId = req.params.id
-    appModel.findOne({_id:applicationId}).then(concernedJobApp=>{
-        if(!concernedJobApp){
-            res.status(404).send({"Message":"job not exists"})
-        }else{
-            if(concernedJobApp.status=='not seen'){
-                concernedJobApp.status= status
-                concernedJobApp.save().then((result)=>{
-                    res.status(200).send({"Message":"job application successfully accepted!", "application": result})
-                })
-            }else{
-                res.status(404).send({"Message":"job appication stats has already been updated!"})
-            }        
-        }
-    }).catch(e=>{
-        res.status(500).send({"e":e})
-    })
+
+let deletePart = async (req,res)=>{
+    try {
+        await Car.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Car deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete the car' });
+    }
 }
+
+
+
+let searchPart = async (req,res)=>{
+    try {
+      const { make, year, model, description, price } = req.query;
+  
+      // Construct a search query based on the provided parameters
+      const searchQuery = {};
+      if (make) {
+        searchQuery.make = { $regex: make, $options: 'i' };
+      }
+      if (year) {
+        searchQuery.year = { $regex: year, $options: 'i' };
+      }
+      if (model) {
+        searchQuery.model = { $regex: model, $options: 'i' };
+      }
+      if (description) {
+        searchQuery.$text = { $search: description };
+      }
+      if (price) {
+        searchQuery.price = { $gte: parseFloat(price) };
+      }
+      // Perform the search using the constructed query
+      const cars = await carModel.find(searchQuery);
+      res.status(200).json(cars);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to search for cars' });
+    }
+}
+  
 
 
 module.exports = {
-    applyJob,
-    viewApplication,
-    updateApplicationStatus, 
-    upload
+    addPart,
+    searchPart,
+    viewPart,
+    upload,
+    deletePart
 }
+
