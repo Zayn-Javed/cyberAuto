@@ -67,9 +67,9 @@ let viewPart = async (req,res)=>{
 let deletePart = async (req,res)=>{
     try {
         await carPartsModel.findByIdAndDelete(req.params.id);
-        res.json({ message: 'part deleted successfully' });
+        res.json({ message: 'Part deleted successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to delete the car' });
+        res.status(500).json({ error: 'Failed to delete the part' });
     }
 }
 
