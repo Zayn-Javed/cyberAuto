@@ -31,6 +31,10 @@ const carSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    fuelAvg:{
+        type:String,
+        required:true,
+    },
     images:{
         type:[String]
     },

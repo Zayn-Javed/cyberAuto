@@ -1,27 +1,23 @@
 const jwt = require("jsonwebtoken")
-const carModel = require('../models/carModel');
+const carPartsModel = require('../models/carPartsModel');
 const multer = require ('multer')
 const { param } = require("../routes/userRoute");
 
 let addPart = (req,res)=>{
 
-    let {make, model, year, price, carType, engine, engineType, description} = req.body
-    let car=new carModel({
+    let {make, partType, price, description} = req.body
+    let part=new carPartsModel({
         make, 
-        model, 
-        year, 
+        partType,  
         price,
-        carType, 
-        engine, 
-        engineType, 
-        Image: req.files.map(file => file.path),
+        Images: req.files.map(file => file.path),
         description,
     })
-    car.save().then( (car)=>{
-        if(!car){
+    part.save().then( (part)=>{
+        if(!part){
             res.status(400).json( { "message":"Part cannot be added"})
         }else{
-            res.status(200).json({"message":"success", "car": car})
+            res.status(200).json({"message":"success", "part": part})
         }
     }).catch(err=>{
         console.log(err)
@@ -59,10 +55,10 @@ const upload = multer({
 
 let viewPart = async (req,res)=>{
     try {
-        const cars = await carModel.find();
-        res.json(cars);
+        const parts = await carPartsModel.find();
+        res.json(parts);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to retrieve cars' });
+        res.status(500).json({ error: 'Failed to retrieve parts' });
     }
 }
 
@@ -70,8 +66,8 @@ let viewPart = async (req,res)=>{
 
 let deletePart = async (req,res)=>{
     try {
-        await Car.findByIdAndDelete(req.params.id);
-        res.json({ message: 'Car deleted successfully' });
+        await carPartsModel.findByIdAndDelete(req.params.id);
+        res.json({ message: 'part deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to delete the car' });
     }
@@ -79,20 +75,33 @@ let deletePart = async (req,res)=>{
 
 
 
+let findPart = async (req,res)=>{
+    try {
+        const { id } = req.params;
+        // Find the part by ID
+        const part = await carPartsModel.findById(id);
+        if (!part) {
+          return res.status(404).json({ error: 'Part not found' });
+        }
+        res.status(200).json(part);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to search for part' });
+    }
+}
+
+
+
 let searchPart = async (req,res)=>{
     try {
-      const { make, year, model, description, price } = req.query;
+      const { make, partType, description, price } = req.query;
   
       // Construct a search query based on the provided parameters
       const searchQuery = {};
       if (make) {
         searchQuery.make = { $regex: make, $options: 'i' };
       }
-      if (year) {
-        searchQuery.year = { $regex: year, $options: 'i' };
-      }
-      if (model) {
-        searchQuery.model = { $regex: model, $options: 'i' };
+      if (partType) {
+        searchQuery.partType = { $regex: partType, $options: 'i' };
       }
       if (description) {
         searchQuery.$text = { $search: description };
@@ -101,10 +110,10 @@ let searchPart = async (req,res)=>{
         searchQuery.price = { $gte: parseFloat(price) };
       }
       // Perform the search using the constructed query
-      const cars = await carModel.find(searchQuery);
-      res.status(200).json(cars);
+      const parts = await carPartsModel.find(searchQuery);
+      res.status(200).json(parts);
     } catch (error) {
-      res.status(500).json({ error: 'Failed to search for cars' });
+      res.status(500).json({ error: 'Failed to search for parts' });
     }
 }
   
@@ -115,6 +124,7 @@ module.exports = {
     searchPart,
     viewPart,
     upload,
-    deletePart
+    deletePart,
+    findPart
 }
 

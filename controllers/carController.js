@@ -6,7 +6,7 @@ const { param } = require("../routes/userRoute");
 
 let addCar = (req,res)=>{
 
-    let {make, model, year, price, carType, engine, engineType, description} = req.body
+    let {make, model, year, price, carType, engine, engineType, fuelAvg, description} = req.body
     let car=new carModel({
         make, 
         model, 
@@ -15,7 +15,8 @@ let addCar = (req,res)=>{
         carType, 
         engine, 
         engineType, 
-        Image: req.files.map(file => file.path),
+        fuelAvg,
+        Images: req.files.map(file => file.path),
         description,
     })
     car.save().then( (car)=>{
@@ -71,13 +72,28 @@ let viewCar = async (req,res)=>{
 
 let deleteCar = async (req,res)=>{
     try {
-        await Car.findByIdAndDelete(req.params.id);
+        await carModel.findByIdAndDelete(req.params.id);
         res.json({ message: 'Car deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to delete the car' });
     }
 }
 
+
+
+let findCar = async (req,res)=>{
+    try {
+        const { id } = req.params;
+        // Find the part by ID
+        const part = await carModel.findById(id);
+        if (!part) {
+          return res.status(404).json({ error: 'Car not found' });
+        }
+        res.status(200).json(part);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to search for car' });
+    }
+}
 
 
 let searchCar = async (req,res)=>{
@@ -116,6 +132,7 @@ module.exports = {
     searchCar,
     viewCar,
     upload,
-    deleteCar
+    deleteCar,
+    findCar
 }
 
