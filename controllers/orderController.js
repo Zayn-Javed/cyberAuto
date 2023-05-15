@@ -29,7 +29,7 @@ let confirmOrder = async (req,res)=>{
 
 
 let viewOrder = async (req,res)=>{    
-    CarOrder.find().then((orders) => {
+  orderModel.find().then((orders) => {
         res.status(200).json(orders);
       }).catch((error) => {
         res.status(500).json({ error: 'Failed to retrieve car orders' });
