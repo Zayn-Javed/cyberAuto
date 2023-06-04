@@ -96,9 +96,6 @@ let findCar = async (req,res)=>{
 }
 
 
-
-
-
 module.exports = {
     addCar,
     viewCar,
