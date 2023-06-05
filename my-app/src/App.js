@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import Login from './components/login';
 import Signup from './components/Signup';
 
+import  DeleteCar  from './components/CarComponents/DeleteCarComponent'
 import AddCar from './components/CarComponents/AddCarComponent'
 function App() {
   // const [user, setuser] = useState(null)
@@ -26,6 +27,7 @@ function App() {
       <Route path="signup" element={<Signup/>} /> */}
       <Route exact path="/" element={<HomeComponent/>}/>
       <Route exact path="/addcar" element={<AddCar/>}/>
+      <Route exact path="/deletecar" element={<DeleteCar/>}/>
     </Routes>
   </Router>
   );

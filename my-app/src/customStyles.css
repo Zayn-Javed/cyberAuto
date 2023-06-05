@@ -15,7 +15,7 @@
   
   /* Thumb */
   .scrollable-container::-webkit-scrollbar-thumb {
-    background: #888; /* Set the color of the scrollbar thumb */
+    background: #111111; /* Set the color of the scrollbar thumb */
     border-radius: 4px; /* Set the border radius of the thumb */
   }
   
@@ -43,6 +43,19 @@
     background-color: #000;
 }  
 
+.flex-backGround{
+    border-radius: 3px;
+    background-color: #153356e7;
+    box-shadow: 0px 0px 5px 3px rgb(217 217 217);
+    color: white;
+}  
+.flex-backGround:hover{
+    border: 0.5px solid rgb(255, 255, 255);
+    scale: 1.055;
+}
+h5{
+    color: white;
+}
 
 @keyframes slidefromTop{
     0%{
@@ -74,6 +87,10 @@ h3{
 
 .most-inner{
     padding: 10%;
+}
+
+.grid-inner{
+    padding: 5%;
 }
 
 .inner{
@@ -120,4 +137,98 @@ h3{
 
 .scale:hover{
     scale: 1.055;
+}
+
+
+.major-flex{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.fflex{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+.ffflex{
+    display: flex;
+    align-items: center;
+    border: 40px;
+    flex-direction: row;
+    padding: 3%;
+    border-bottom: 0.5px dashed  rgb(255, 255, 255);
+
+    
+}
+
+
+.ttop{
+    border: 40px;
+    border-radius: 15%;
+    
+    box-shadow: 0px 0px 3px 2px rgb(217 217 217);
+}
+.ffflex:hover{
+    scale: 1.08;
+}
+.bo{
+    border: 2px;
+    border-color: white;
+    background-color: #000;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+.pad{
+    padding-left: 10%;
+}
+
+.carp{
+    height: 144px;
+    width: 144px;
+}
+hr{
+    color: white;
+}
+
+.gflrx{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+
+.im-div{
+    padding-left: 10%;
+
+}
+.gi{
+    width: 144px;
+    width: 144px;
+}
+.l-flex{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+}
+
+.des{
+    animation:  slidefromTop 0.5s ease-in;
+    background-color: rgba(22, 22, 22, 0.726);
+    color: white;
+    border-radius: 20px;
+    padding: 25px;
+    width: 40%;
+}
+
+.img-f{
+    display: flex;
+    justify-content: center;
+}
+
+.just{
+    text-align: justify;
+    color: #969696;
 }
