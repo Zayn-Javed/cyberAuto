@@ -1,0 +1,123 @@
+.scrollable-container {
+    height: 100vh; /* Set the height to 100% of the viewport height */
+    overflow-y: scroll; /* Enable vertical scrolling */
+  }
+  
+  /* Customize the scrollbar appearance */
+  .scrollable-container::-webkit-scrollbar {
+    width: 8px; /* Set the width of the scrollbar */
+  }
+  
+  /* Track */
+  .scrollable-container::-webkit-scrollbar-track {
+    background: #000; /* Set the background color of the scrollbar track */
+  }
+  
+  /* Thumb */
+  .scrollable-container::-webkit-scrollbar-thumb {
+    background: #888; /* Set the color of the scrollbar thumb */
+    border-radius: 4px; /* Set the border radius of the thumb */
+  }
+  
+  /* Thumb on hover */
+  .scrollable-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Set the color of the thumb on hover */
+  }
+  
+  /* Corner */
+  .scrollable-container::-webkit-scrollbar-corner {
+    background: #000; /* Set the background color of the scrollbar corner */
+  }
+
+
+  .app-container {
+    background-image: url('./images/honda.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+ 
+  }
+  
+
+.backGround{
+    background-color: #000;
+}  
+
+
+@keyframes slidefromTop{
+    0%{
+        transform: translateX(100%);
+    }
+    100%{
+        transform: translateX(0%);
+    }
+}
+.upback{
+    animation:  slidefromTop 0.5s ease-in;
+    background-color: rgba(22, 22, 22, 0.726);
+    color: white;
+    border-radius: 20px;
+}
+.nav{
+    background-color: #153356e0;
+    color: white;
+}
+
+li{
+    color: rgb(228, 228, 228);
+    font-size: medium;
+}
+
+h3{
+    color: white;
+}
+
+.most-inner{
+    padding: 10%;
+}
+
+.inner{
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+.txtbck{
+    background-color: rgb(22, 22, 22);
+    border-radius: 20px;
+}
+
+.flex{
+    display: flex;
+    justify-content: space-around;
+    background-color: rgb(22, 22, 22);;
+    border-radius: 20px;
+}
+
+.centered{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.my-icons{
+    height: 40px;
+    width: 40px;
+    margin: 0px 10px;
+}
+
+.footer{
+    background-color: #3c92f559;
+    display: flex;
+    justify-content: center
+}
+.foot-flex{
+    color: white;
+    display: flex;
+    width: 60%;
+    padding: 1%;
+}
+
+.scale:hover{
+    scale: 1.055;
+}
