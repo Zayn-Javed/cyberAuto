@@ -23,20 +23,20 @@ import Footer from "./GeneralComponent/FooterComponent";
 // const Home = ({user , setuser}) => {
 //   const [categories, setCategories] = useState([]);
 //   const [difficulty, setDifficulty] = useState('easy');
-//   const [Lgout, setLgout] = useState(false)
-//   const logout = ()=>{
-//     setuser(null)
-//     setLgout(true)
-//     localStorage.clear()
-//   }
-//   const hist = useNavigate()
-//   useEffect(() => {
-//     if(!user){
-//       hist("/login")
-//     }else{
+  // const [Lgout, setLgout] = useState(false)
+  // const logout = ()=>{
+  //   setuser(null)
+  //   setLgout(true)
+  //   localStorage.clear()
+  // }
+  // const hist = useNavigate()
+  // useEffect(() => {
+  //   if(!user){
+  //     hist("/login")
+  //   }else{
 
-//     }
-//   }, [logout]);
+  //   }
+  // }, [logout]);
 
 //   return (
 //     <>
@@ -47,16 +47,35 @@ import Footer from "./GeneralComponent/FooterComponent";
 
 
 
-const HomeComponent = ()=>{
+const HomeComponent = ({user , setuser})=>{
+  const [Lgout, setLgout] = useState(false);
+
+  const hist = useNavigate()
+  useEffect(() => {
+    if(!user){
+      hist("/login")
+    }else{
+
+    }
+  }, [Lgout]);
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
   };
 
+  const toPart= ()=>{
+    hist("/carpartmanagement")
+  }
+  const toCar= ()=>{
+    hist("/carmanagement")
+  }
+  const toOrder= ()=>{
+    hist("/ordermanagement")
+  }
   return (
     <div className="scrollable-container backGround">
-      <AppNav/>
+      <AppNav user={user} setuser={setuser} Lgout={Lgout} setLgout={setLgout}/>
       <Carousel activeIndex={index} onSelect={handleSelect}>
         <Carousel.Item>
           <img
@@ -70,7 +89,7 @@ const HomeComponent = ()=>{
               <br/>
             <h3>Car Management</h3>
               <p>Manage the car such as Add, Delete, View Cars</p>
-            <Button variant="outline-success">Car Management</Button>
+            <Button variant="outline-success" onClick={toCar}>Car Management</Button>
             <br/>
           </Carousel.Caption>
         </Carousel.Item>
@@ -86,7 +105,7 @@ const HomeComponent = ()=>{
             <br/>
           <h3>Car Parts Management</h3>
             <p>Manage the car parts such as Add, Delete, View Parts</p>
-          <Button variant="outline-success">Car Parts Management</Button>
+          <Button variant="outline-success" onClick={toPart}>Car Parts Management</Button>
           <br/>
           </Carousel.Caption>
         </Carousel.Item>
@@ -102,7 +121,7 @@ const HomeComponent = ()=>{
             <br/>
           <h3>Orders Management</h3>
             <p>Manage the car orders such as reject or confirm Orders</p>
-          <Button variant="outline-warning">Orders Management</Button>
+          <Button variant="outline-warning" onClick={toOrder}>Orders Management</Button>
           <br/>
           </Carousel.Caption>
         </Carousel.Item>

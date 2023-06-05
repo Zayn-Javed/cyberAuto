@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -11,8 +11,9 @@ import AppNav from '../GeneralComponent/NavComponent';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import { useNavigate } from 'react-router-dom'
 
-function AddCar() {
+function AddCar({user , setuser}) {
   const [formData, setFormData] = useState({
     make: '',
     model: '',
@@ -25,7 +26,15 @@ function AddCar() {
     description: '',
     image: null
   });
+  const [Lgout, setLgout] = useState(false);
+    const hist = useNavigate()
+    useEffect(() => {
+        if(!user){
+        hist("/login")
+        }else{
 
+        }
+  }, [Lgout]);
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
@@ -37,7 +46,7 @@ function AddCar() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = 'your-api-endpoint-url';
+    const url = 'http://localhost:3001/car/create';
 
     try {
       const formDataToSend = new FormData();
@@ -51,8 +60,13 @@ function AddCar() {
       formDataToSend.append('fuelAvg', formData.fuelAvg);
       formDataToSend.append('description', formData.description);
       formDataToSend.append('image', formData.image);
-
-      const response = await axios.post(url, formDataToSend);
+      console.log(localStorage.getItem('token'));
+      const response = await axios.post(url, formDataToSend, {
+        headers: {
+          "token": JSON.parse(localStorage.getItem('token')),
+          'Content-Type': 'multipart/form-data'
+        }
+      });
       console.log(response.data); // Handle the response data as per your requirement
     } catch (error) {
       console.error(error);
@@ -61,7 +75,7 @@ function AddCar() {
 
   return (
     <div className="scrollable-container backGround app-container">
-      <AppNav />
+      <AppNav user={user} setuser={setuser} Lgout={Lgout} setLgout={setLgout}/>
       <br />
       <br />
       <Container className=''>

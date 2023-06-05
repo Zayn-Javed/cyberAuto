@@ -2,16 +2,32 @@ const jwt = require("jsonwebtoken")
 const carPartsModel = require('../models/carPartsModel');
 const multer = require ('multer')
 const { param } = require("../routes/userRoute");
+const cloudinary= require('../cloudnary')
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+
+// Configure multer storage for Cloudinary
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: 'car-parts', // Specify the folder where images will be stored in Cloudinary
+      allowed_formats: ['jpg', 'jpeg', 'png']
+    }
+  });
+
+  // Create multer instance with the Cloudinary storage
+const upload = multer({ storage: storage });
+
 
 let addPart = (req,res)=>{
-
     let {make, partType, price, description} = req.body
+    const image = req.file.filename;
     let part=new carPartsModel({
-        make, 
-        partType,  
+        make,
         price,
-        Images: req.files.map(file => file.path),
+        partType,
         description,
+        images: [image],
     })
     part.save().then( (part)=>{
         if(!part){
@@ -23,43 +39,38 @@ let addPart = (req,res)=>{
         console.log(err)
         res.status(400).json( { "message":"Part cannot be added"})
     })
+
 }
-
-
-
-const storage = multer.diskStorage({
-    destination:(req , file , cb)=>{
-        cb(null , 'uploads')
-    },
-    filename:(req , file , cb)=>{
-        cb(null ,Date.now()+file.originalname)
-    }
-})
-
-
-const filter = (req , file , cb)=>{
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-        cb(null , true)
-    }else{
-        cb(new Error("UnSupported file") , false)
-    }
-}
-
-
-const upload = multer({
-   storage:storage,
-   fileFilter:filter,
-    limits:1024*1024*10
-})
 
 
 let viewPart = async (req,res)=>{
     try {
         const parts = await carPartsModel.find();
-        res.json(parts);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to retrieve parts' });
-    }
+    
+        const partsWithImages = await Promise.all(parts.map(async (part) => {
+          const images = await Promise.all(part.images.map(async (image) => {
+            const imageURL = await cloudinary.url(image);
+            return imageURL;
+          }));
+    
+          return {
+            ...part._doc,
+            images: images
+          };
+        }));
+        res.status(200).json({
+          message: 'Success',
+          parts: partsWithImages
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({
+          message: 'Server Error'
+        });
+      }
+
+
+
 }
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -11,47 +11,72 @@ import AppNav from '../GeneralComponent/NavComponent';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import { useNavigate } from 'react-router-dom'
 
-function AddCarPart() {
-  const [formData, setFormData] = useState({
-    make: '',
-    price: '',
-    partType: 'Head Lights',
-    description: '',
-    image: null
-  });
+function AddCarPart({user , setuser}) {
+  const [make, setMake] = useState('');
+  const [price, setPrice] = useState('');
+  const [partType, setPartType] = useState('Head Lights');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState(null);
+  const [Lgout, setLgout] = useState(false);
+  const hist = useNavigate()
+    useEffect(() => {
+        if(!user){
+        hist("/login")
+        }else{
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
+        }
+  }, [Lgout]);
+
+  const handleMakeChange = (e) => {
+    setMake(e.target.value);
+  };
+
+  const handlePriceChange = (e) => {
+    setPrice(e.target.value);
+  };
+
+  const handlePartTypeChange = (e) => {
+    setPartType(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
   };
 
   const handleImageChange = (e) => {
-    setFormData({ ...formData, image: e.target.files[0] });
+    setImage(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = 'your-api-endpoint-url';
+    const url = 'http://localhost:3001/car-parts/create';
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('make', formData.make);
-      formDataToSend.append('price', formData.price);
-      formDataToSend.append('partType', formData.carType);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('image', formData.image);
+      const data = {
+        make,
+        price,
+        partType,
+        description,
+        image
+      };
+      console.log(data);
+      const response = await axios.post(url, data, {
+        headers: {
+          token: JSON.parse(localStorage.getItem('token')),
+          'Content-Type': 'application/json'
+        }
+      });
 
-      const response = await axios.post(url, formDataToSend);
       console.log(response.data); // Handle the response data as per your requirement
     } catch (error) {
       console.error(error);
     }
   };
-
   return (
     <div className="scrollable-container backGround app-container">
-      <AppNav />
+      <AppNav user={user} setuser={setuser} Lgout={Lgout} setLgout={setLgout}/>
       <br />
       <br />
       <Container className=''>
@@ -68,8 +93,8 @@ function AddCarPart() {
                 placeholder="e.g., Denso"
                 aria-label="Make"
                 aria-describedby="basic-addon1"
-                value={formData.make}
-                onChange={handleChange}
+                value={make}
+                onChange={handleMakeChange}
               />
             </InputGroup>
             <InputGroup className="mb-3">
@@ -77,8 +102,8 @@ function AddCarPart() {
               <Form.Control
                 id="price"
                 aria-label="Price of Car"
-                value={formData.price}
-                onChange={handleChange}
+                value={price}
+                onChange={handlePriceChange}
               />
               <InputGroup.Text>.00</InputGroup.Text>
             </InputGroup>
@@ -88,16 +113,16 @@ function AddCarPart() {
                 id="description"
                 as="textarea"
                 aria-label="Description"
-                value={formData.description}
-                onChange={handleChange}
+                value={description}
+                onChange={handleDescriptionChange}
               />
             </InputGroup>
             <Form.Label htmlFor="basic-url">Part Type</Form.Label>
             <Form.Select
               id="partType"
               aria-label="Part Type"
-              value={formData.partType}
-              onChange={handleChange}
+              value={partType}
+              onChange={handlePartTypeChange}
             >
               <option value="Head Lights">Head Lights</option>
               <option value="Alloy Rims">Alloy Rims</option>
@@ -123,3 +148,21 @@ function AddCarPart() {
 }
 
 export default AddCarPart;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

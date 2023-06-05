@@ -14,6 +14,7 @@ import Image from 'react-bootstrap/Image';
 import top from '../../images/toop.jpg'
 import gif from '../../images/des.png'
 import { Form } from "react-bootstrap";
+import { useNavigate } from 'react-router-dom'
 
 function TopImg() {
     return <div className='ttop'><Image src={top} fluid /></div>;
@@ -39,87 +40,33 @@ function SearchBar() {
       </Container>
     );
 }
-function DeleteCarPartComponet() {
-  const [carParts, setCarParts] = useState([
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
+function DeleteCarPartComponet({user , setuser}) {
+    const [Lgout, setLgout] = useState(false);
+    const hist = useNavigate()
+    useEffect(() => {
+        if(!user){
+        hist("/login")
+        }else{
 
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
+        }
+    }, [Lgout]);
+    const toAdd= ()=>{
+        hist("/addcarpart")
+    }
+  const [carParts, setCarParts] = useState([ ]);
 
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-
-    },
-  ]);
-
-//   useEffect(() => {
-//     fetchCarParts();
-//   }, []);
+  useEffect(() => {
+    fetchCarParts();
+  },[]);
 
   const fetchCarParts = async () => {
     try {
-      const response = await axios.get('your-api-endpoint-url');
-      setCarParts(response.data);
+        const response = await axios.get('http://localhost:3001/car-parts/view-parts', {
+            headers: {
+              'token': JSON.parse(localStorage.getItem('token')),
+            },
+        });      
+        setCarParts(response.data.parts);
     } catch (error) {
       console.error(error);
     }
@@ -136,7 +83,7 @@ function DeleteCarPartComponet() {
 
   return (
         <div className="scrollable-container  backGround">
-            <AppNav />
+            <AppNav user={user} setuser={setuser} Lgout={Lgout} setLgout={setLgout}/>
             <div className='fflex'>
                 <TopImg/>
             </div>
@@ -158,7 +105,7 @@ function DeleteCarPartComponet() {
                         part unavailable if you want through this page of CyberAutos easily.
                     </p>
                     <div className='img-f'>
-                        <Button variant="outline-success">Add Part</Button>
+                        <Button variant="outline-success" onClick={toAdd}>Add Part</Button>
                     </div>
                 </div>
                 <Container className=" upback scrollable-container bo">
@@ -166,10 +113,11 @@ function DeleteCarPartComponet() {
                     <h2 className="text-light text-center mb-4">Car Part List</h2>
                     <div className='flex-row'>
                         {carParts.map((car) => (
-                            <div>
-                                <div key={car._id} className='ffflex '>
+                            <div key={car._id} >
+                                <div className='ffflex '>
                                     <div className='im-div'>
-                                    <img className='carp' src={pic}/>
+                                        
+                                    <img className='carp' src={car.images[0]}/>
                                     </div>
                                     <div className='pad'>
                                         <h4>{car.make}{" "}{car.partType}</h4>

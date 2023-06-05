@@ -20,7 +20,6 @@ let signup=(request,response)=>{
 }
 
 let signin = (req,res)=>{
-
     let {email,password} = req.body;
     userModel.findOne({ email:email}).then(user=>{
         if(!user){
@@ -33,7 +32,7 @@ let signin = (req,res)=>{
                 },process.env.secret_key , {
                     expiresIn:'24h'
                 })
-                res.status(200).send({"user":user, "token":token})
+                res.status(200).send({"user":user, "token":token,  "success": true})
             }else{
                 res.status(404).send({"Message":"Invalid Passowrd"})
             }        

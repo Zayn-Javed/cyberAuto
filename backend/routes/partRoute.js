@@ -4,7 +4,7 @@ const decode = require("jsonwebtoken/decode");
 const partRouter = require("express").Router();
 const {isUser,isAdmin} = require('../authentication')
 
-partRouter.post("/create",isUser, isAdmin, upload.array("file"), addPart)
+partRouter.post("/create",isUser, isAdmin, upload.single("image"), addPart)
 partRouter.delete("/delete-part/:id",isUser, isAdmin, deletePart)
 partRouter.get("/search-part",isUser, searchPart)
 partRouter.get("/view-parts",isUser, viewPart)

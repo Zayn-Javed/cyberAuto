@@ -7,6 +7,8 @@ const userRoute = require('./routes/userRoute.js');
 const orderRoutes = require('./routes/orderRoute.js')
 const carRoutes = require('./routes/carRoute.js')
 const partRoutes = require('./routes/partRoute.js')
+const cors = require('cors');
+app.use(cors());
 
 app.listen(process.env.PORT || 3001, () => {
     console.log(`app listenting on port ${process.env.PORT}`);

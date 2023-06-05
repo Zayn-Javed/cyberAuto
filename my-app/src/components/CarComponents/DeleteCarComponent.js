@@ -13,10 +13,26 @@ import pic from "../../images/car.png"
 import Image from 'react-bootstrap/Image';
 import top from '../../images/toop.jpg'
 import gif from '../../images/des.png'
+import { useNavigate } from 'react-router-dom'
+import AddCar from './AddCarComponent';
+
 function TopImg() {
     return <div className='ttop'><Image src={top} fluid /></div>;
 }
-function DeleteCarComponet() {
+function DeleteCarComponet({user , setuser}) {
+    const [Lgout, setLgout] = useState(false);
+
+    const hist = useNavigate()
+    useEffect(() => {
+      if(!user){
+        hist("/login")
+      }else{
+  
+      }
+    }, [Lgout]);
+    const toAdd= ()=>{
+        hist("/addcar")
+    }
   const [cars, setCars] = useState([
     {
         "car._id": 123132,
@@ -113,7 +129,7 @@ function DeleteCarComponet() {
 
   return (
         <div className="scrollable-container  backGround">
-            <AppNav />
+             <AppNav user={user} setuser={setuser} Lgout={Lgout} setLgout={setLgout}/>
             <div className='fflex'>
                 <TopImg/>
             </div>
@@ -133,15 +149,15 @@ function DeleteCarComponet() {
                         unavailable if you want through this page of CyberAutos easily.
                     </p>
                     <div className='img-f'>
-                        <Button variant="outline-success">Add Car</Button>
+                        <Button variant="outline-success" onClick={toAdd}>Add Car</Button>
                     </div>
                 </div>
                 <Container className=" upback scrollable-container bo">
                     <h2 className="text-light text-center mb-4">Car List</h2>
                     <div className='flex-row'>
                         {cars.map((car) => (
-                            <div>
-                                <div key={car._id} className='ffflex '>
+                            <div key={car._id} >
+                                <div className='ffflex '>
                                     <div className='im-div'>
                                     <img className='carp' src={pic}/>
                                     </div>

@@ -15,30 +15,35 @@ export default function Login({setuser}) {
     const [email, setemail] = useState("")
     const [password, setpasswrod] = useState("")
 
-    let login = ()=>{
-        if(email!=='' && password!==''){
-            let data = {
-                email,
-                password
-            }
-            fetch('http://localhost:3001/user/signin' , {
-                method:"POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body:JSON.stringify(data)
-            }).then((res)=>
-                res.json()
-            ).then(data=>{
-                if(data.success){
-                    localStorage.setItem("user" , JSON.stringify(data.user))
-                    localStorage.setItem("token" , JSON.stringify(data.token))
-                    setuser(data.user)
-                    hist("/")
-                }
+    let login = () => {
+        if (email !== '' && password !== '') {
+          let data = {
+            email,
+            password
+          };
+      
+          fetch('http://localhost:3001/user/signin', {
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log(data);
+              if (data.success) {
+                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("token", JSON.stringify(data.token));
+                setuser(data.user);
+                hist("/");
+              }
             })
+            .catch(error => {
+              console.error(error);
+            });
         }
-    }
+      };
   return (
     <div>
         <h1>Login</h1>

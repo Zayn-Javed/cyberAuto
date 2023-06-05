@@ -6,7 +6,7 @@ const {isUser,isEmployeer,isStudent,isOfficer} = require('../authentication')
 
 
 userRouter.post('/signup',signup)
-userRouter.get('/signin',signin)
+userRouter.post('/signin',signin)
 userRouter.put('/update', isUser ,updat)
 
 userRouter.get('/', isUser, (req,res,next)=>{

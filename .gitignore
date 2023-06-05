@@ -1,4 +1,5 @@
 backend/node_modules
 backend/.env
 backend/uploads
+backend/cloudnary.js
 my-app/node_modules
