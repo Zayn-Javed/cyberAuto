@@ -13,11 +13,34 @@ import pic from "../../images/car.png"
 import Image from 'react-bootstrap/Image';
 import top from '../../images/toop.jpg'
 import gif from '../../images/des.png'
+import { Form } from "react-bootstrap";
+
 function TopImg() {
     return <div className='ttop'><Image src={top} fluid /></div>;
 }
-function DeleteCarComponet() {
-  const [cars, setCars] = useState([
+function SearchBar() {
+    return (
+      <Container className="mt-5 search">
+        <Row>
+          <Col sm={4}>
+            <Form className="d-flex">
+              <Form.Control
+                type="search"
+                placeholder="Search"
+                className="me-2 rounded-pill se"
+                aria-label="Search"
+              />
+              <Button className="rounded-pill" variant="outline-primary">
+                Search
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    );
+}
+function DeleteCarPartComponet() {
+  const [carParts, setCarParts] = useState([
     {
         "car._id": 123132,
         "make": "toyo",
@@ -90,13 +113,13 @@ function DeleteCarComponet() {
   ]);
 
 //   useEffect(() => {
-//     fetchCars();
+//     fetchCarParts();
 //   }, []);
 
-  const fetchCars = async () => {
+  const fetchCarParts = async () => {
     try {
       const response = await axios.get('your-api-endpoint-url');
-      setCars(response.data);
+      setCarParts(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -105,7 +128,7 @@ function DeleteCarComponet() {
   const handleDelete = async (carId) => {
     try {
       await axios.delete(`your-api-endpoint-url/${carId}`);
-      fetchCars();
+      fetchCarParts();
     } catch (error) {
       console.error(error);
     }
@@ -118,6 +141,8 @@ function DeleteCarComponet() {
                 <TopImg/>
             </div>
             <br/>
+            <SearchBar/>
+            <br/>
             <Container className='l-flex'>
                 <div className='des'>
                     <div className='img-f'>
@@ -128,25 +153,26 @@ function DeleteCarComponet() {
                         Description
                     </h3>
                     <p className='just'>
-                        Through CyberAutos, now you can add any vehicle which will be available to a large number 
-                        of the customer around the world! So, Hurryup and add the vehicle. You can also make the vehicle
-                        unavailable if you want through this page of CyberAutos easily.
+                        Through CyberAutos, now you can add any vehicle parts which will be available to a large number 
+                        of the customer around the world for including these with cars as customization! So, Hurryup and add the vehicle. You can also make the vehicle
+                        part unavailable if you want through this page of CyberAutos easily.
                     </p>
                     <div className='img-f'>
-                        <Button variant="outline-success">Add Car</Button>
+                        <Button variant="outline-success">Add Part</Button>
                     </div>
                 </div>
                 <Container className=" upback scrollable-container bo">
-                    <h2 className="text-light text-center mb-4">Car List</h2>
+                    <br/>
+                    <h2 className="text-light text-center mb-4">Car Part List</h2>
                     <div className='flex-row'>
-                        {cars.map((car) => (
+                        {carParts.map((car) => (
                             <div>
                                 <div key={car._id} className='ffflex '>
                                     <div className='im-div'>
                                     <img className='carp' src={pic}/>
                                     </div>
                                     <div className='pad'>
-                                        <h4>{car.make}{" "}{car.model}</h4>
+                                        <h4>{car.make}{" "}{car.partType}</h4>
                                         <h5>{car.price}</h5>
                                         <p className='just'>{car.description}</p>
                                         <Button variant="outline-danger" onClick={() => handleDelete(car._id)}>Delete</Button>
@@ -156,6 +182,7 @@ function DeleteCarComponet() {
                             </div>
                         ))}
                     </div>
+                    
                 </Container>
             </Container>
             <br/>
@@ -165,4 +192,4 @@ function DeleteCarComponet() {
   );
 }
 
-export default DeleteCarComponet;
+export default DeleteCarPartComponet;

@@ -9,6 +9,8 @@ import Signup from './components/Signup';
 
 import  DeleteCar  from './components/CarComponents/DeleteCarComponent'
 import AddCar from './components/CarComponents/AddCarComponent'
+import AddCarPart from './components/CarPartComponents/AddCarPartComponent'
+import DeleteCarPartComponet from './components/CarPartComponents/DeleteCarPartComponent';
 function App() {
   // const [user, setuser] = useState(null)
   // useEffect(() => {
@@ -28,6 +30,8 @@ function App() {
       <Route exact path="/" element={<HomeComponent/>}/>
       <Route exact path="/addcar" element={<AddCar/>}/>
       <Route exact path="/deletecar" element={<DeleteCar/>}/>
+      <Route exact path="/addcarpart" element={<AddCarPart/>}/>
+      <Route exact path="/deletepart" element={<DeleteCarPartComponet/>}/>
     </Routes>
   </Router>
   );

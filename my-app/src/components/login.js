@@ -21,7 +21,7 @@ export default function Login({setuser}) {
                 email,
                 password
             }
-            fetch('http://localhost:3000/user/signin' , {
+            fetch('http://localhost:3001/user/signin' , {
                 method:"POST",
                 headers: {
                     'Content-Type': 'application/json'
