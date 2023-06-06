@@ -26,7 +26,7 @@ function TopImg() {
 }
 function DeleteCarComponet({user , setuser}) {
     const [Lgout, setLgout] = useState(false);
-    const [cars, setCars] = useState([ ]);
+    const [orders, setorders] = useState([ ]);
 
     const hist = useNavigate()
     useEffect(() => {
@@ -39,31 +39,33 @@ function DeleteCarComponet({user , setuser}) {
     }, [Lgout]);
 
   useEffect(() => {
-    fetchCars();
+    fetchorders();
   }, []);
 
-  const fetchCars = async () => {
+  const fetchorders = async () => {
     try {
-        const response = await axios.get('http://localhost:3001/car/view-cars', {
+        const response = await axios.get('http://localhost:3001/orders/view-order', {
             headers: {
                 'token': JSON.parse(localStorage.getItem('token')),
             }
         });
-        console.log(response.data.cars);
-        setCars(response.data.cars);
+        console.log(response.data);
+        setorders(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleDelete = async (carId) => {
+  const handleUpdation = async (ordId, value) => {
     try {
-        await axios.delete(`http://localhost:3001/car/delete-car/${carId}`, {
+        await axios.put(`http://localhost:3001/orders/confirm-order/${ordId}`,{
+            status: value
+        } , {
             headers: {
               'token': JSON.parse(localStorage.getItem('token')),
             },
         });
-        fetchCars();
+        fetchorders();
     } catch (error) {
       console.error(error);
     }
@@ -94,17 +96,18 @@ function DeleteCarComponet({user , setuser}) {
                 <Container className=" upback scrollable-container bo">
                     <h2 className="text-light text-center mb-4">Car Orders List</h2>
                     <div className='flex-row'>
-                        {cars.map((car) => (
-                            <div key={car._id} >
+                        {orders.map((order) => (
+                            <div key={order._id} >
                                 <div className='ffflex '>
                                     <div className='im-div'>
                                     <img className='carp' src={or}/>
                                     </div>
                                     <div className='pad'>
-                                        <h4>{car.make}{" "}{car.model}</h4>
-                                        <h5>{car.price}</h5>
-                                        <p className='just'>{car.description}</p>
-                                        <Button variant="outline-danger" onClick={() => handleDelete(car._id)}>Delete</Button>
+                                        <h4>{"Order# "}{order._id}</h4>
+                                        <h5>{"$ "}{ order.price}</h5>
+                                        <p className='just'>{"Order placement date: "}{order.dateOrdered}</p>
+                                        <Button variant="outline-success" onClick={() => handleUpdation(order._id, "true")}>Approve</Button>{"         "}
+                                        <Button variant="outline-danger" onClick={() => handleUpdation(order._id, "false")}>Decline</Button>
                                     </div>
                                 </div>
                                 <br/>

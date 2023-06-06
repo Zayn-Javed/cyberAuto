@@ -5,13 +5,17 @@ const carOrderSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  dateOrdered: {
+    type: Date,
+    default: Date.now
+  }, 
   price: {
     type: Number,
     required: true
   },
   approved: {
     type: Boolean,
-    default: false
+    default: undefined
   }
 });
 

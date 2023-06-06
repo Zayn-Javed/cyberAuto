@@ -28,13 +28,15 @@ let confirmOrder = async (req,res)=>{
 }
 
 
-let viewOrder = async (req,res)=>{    
-  orderModel.find().then((orders) => {
-        res.status(200).json(orders);
-      }).catch((error) => {
-        res.status(500).json({ error: 'Failed to retrieve car orders' });
+let viewOrder = async (req, res) => {
+  orderModel.find({ approved: undefined })
+    .then((orders) => {
+      res.status(200).json(orders);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: 'Failed to retrieve car orders' });
     });
-}
+};
   
 
 module.exports = {
