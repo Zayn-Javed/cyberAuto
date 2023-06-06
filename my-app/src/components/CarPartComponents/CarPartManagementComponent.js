@@ -36,8 +36,9 @@ function DeleteCarPartComponet({user , setuser}) {
 
   const hist = useNavigate()
   useEffect(() => {
-    if(!user){
-    hist("/login")
+    let userr = localStorage.getItem("user")
+    if(!userr){
+          hist("/login")
     }else{
 
     }

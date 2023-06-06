@@ -23,7 +23,8 @@ function AddCarPart({ user, setuser }) {
   const hist = useNavigate();
 
   useEffect(() => {
-    if (!user) {
+    let userr = localStorage.getItem("user")
+    if(!userr){
       hist("/login");
     }
   }, [Lgout]);

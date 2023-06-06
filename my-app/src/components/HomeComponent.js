@@ -20,39 +20,14 @@ import por from "../images/porsche.png";
 import bmw from "../images/bmw.png";
 import fr from "../images/ferrari.png";
 import Footer from "./GeneralComponent/FooterComponent";
-// const Home = ({user , setuser}) => {
-//   const [categories, setCategories] = useState([]);
-//   const [difficulty, setDifficulty] = useState('easy');
-  // const [Lgout, setLgout] = useState(false)
-  // const logout = ()=>{
-  //   setuser(null)
-  //   setLgout(true)
-  //   localStorage.clear()
-  // }
-  // const hist = useNavigate()
-  // useEffect(() => {
-  //   if(!user){
-  //     hist("/login")
-  //   }else{
-
-  //   }
-  // }, [logout]);
-
-//   return (
-//     <>
-//       <AppNav/>
-//     </>
-//   );
-// };
-
-
 
 const HomeComponent = ({user , setuser})=>{
   const [Lgout, setLgout] = useState(false);
 
   const hist = useNavigate()
   useEffect(() => {
-    if(!user){
+    let userr = localStorage.getItem("user")
+    if(!userr){
       hist("/login")
     }else{
 
