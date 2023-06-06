@@ -5,10 +5,10 @@ import React, { useEffect, useState } from "react";
 import Login from './components/login';
 import Signup from './components/Signup';
 
-import  DeleteCar  from './components/CarComponents/DeleteCarComponent'
+import  DeleteCar  from './components/CarComponents/CarManagementComponent'
 import AddCar from './components/CarComponents/AddCarComponent'
 import AddCarPart from './components/CarPartComponents/AddCarPartComponent'
-import DeleteCarPartComponet from './components/CarPartComponents/DeleteCarPartComponent';
+import DeleteCarPartComponet from './components/CarPartComponents/CarPartManagementComponent';
 import OrderManagement from './components/OrderComponents/OrderManagementComponent';
 
 function App() {
@@ -22,11 +22,6 @@ function App() {
   return (
     <Router>
     <Routes>
-      {/* <Route exact path="/" element={<HomeComponent user={user} setuser={setuser}/>} />
-      <Route exact path="/quiz/:category/:difficulty" element={<QuizComponent />} />
-      <Route exact path="/over/:score" element={<ReviewComponent />}/>
-      <Route path="login" element={<Login setuser={setuser}/>} />
-      <Route path="signup" element={<Signup/>} /> */}
       <Route path="login" element={<Login setuser={setuser}/>} />
       <Route exact path="/" element={<HomeComponent user={user} setuser={setuser}/>}/>
       <Route exact path="/addcar" element={<AddCar user={user} setuser={setuser}/>}/>

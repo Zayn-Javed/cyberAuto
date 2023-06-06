@@ -30,21 +30,21 @@ function TopImg() {
 }
 
 function DeleteCarPartComponet({user , setuser}) {
-    const [Lgout, setLgout] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [carParts, setCarParts] = useState([ ]);
+  const [Lgout, setLgout] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [carParts, setCarParts] = useState([ ]);
 
-    const hist = useNavigate()
-    useEffect(() => {
-        if(!user){
-        hist("/login")
-        }else{
+  const hist = useNavigate()
+  useEffect(() => {
+    if(!user){
+    hist("/login")
+    }else{
 
-        }
-    }, [Lgout]);
-    const toAdd= ()=>{
-        hist("/addcarpart")
     }
+  }, [Lgout]);
+  const toAdd= ()=>{
+    hist("/addcarpart")
+  }
 
   useEffect(() => {
     fetchCarParts();
