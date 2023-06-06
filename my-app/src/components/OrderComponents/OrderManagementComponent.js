@@ -8,6 +8,8 @@ import AppNav from '../GeneralComponent/NavComponent';
 import Image from 'react-bootstrap/Image';
 import top from '../../images/otop.jpeg'
 import gif from '../../images/ORDERS.png'
+import or from '../../images/ord.png'
+
 import { useNavigate } from 'react-router-dom'
 
 function TopImg() {
@@ -89,13 +91,13 @@ function DeleteCarComponet({user , setuser}) {
                     </p>
                 </div>
                 <Container className=" upback scrollable-container bo">
-                    <h2 className="text-light text-center mb-4">Car List</h2>
+                    <h2 className="text-light text-center mb-4">Car Orders List</h2>
                     <div className='flex-row'>
                         {cars.map((car) => (
                             <div key={car._id} >
                                 <div className='ffflex '>
                                     <div className='im-div'>
-                                    <img className='carp' src={car.images[0]}/>
+                                    <img className='carp' src={or}/>
                                     </div>
                                     <div className='pad'>
                                         <h4>{car.make}{" "}{car.model}</h4>

@@ -50,25 +50,29 @@ function AddCarPart({ user, setuser }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = 'http://localhost:3001/car-parts/create';
-
-    try {
-      const formData = new FormData();
-      formData.append('make', make);
-      formData.append('price', price);
-      formData.append('partType', partType);
-      formData.append('description', description);
-      formData.append('image', image);
-
-      const response = await axios.post(url, formData, {
-        headers: {
-          token: JSON.parse(localStorage.getItem('token')),
-        }
-      });
-      console.log(response.data); 
-      alert("Car Part is Successfully added")
-    } catch (error) {
-      console.error(error);
+    if (make==null || price==null || partType==null || description==null || image==null) {
+      alert("Please fill all fields")
+    }
+    else{
+      const url = 'http://localhost:3001/car-parts/create';
+      try {
+        const formData = new FormData();
+        formData.append('make', make);
+        formData.append('price', price);
+        formData.append('partType', partType);
+        formData.append('description', description);
+        formData.append('image', image);
+  
+        const response = await axios.post(url, formData, {
+          headers: {
+            token: JSON.parse(localStorage.getItem('token')),
+          }
+        });
+        console.log(response.data); 
+        alert("Car Part is Successfully added")
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 

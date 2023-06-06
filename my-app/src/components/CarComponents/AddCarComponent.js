@@ -45,31 +45,35 @@ function AddCarPart({ user, setuser }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = 'http://localhost:3001/car/create';
-
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('make', formData.make);
-      formDataToSend.append('model', formData.model);
-      formDataToSend.append('year', formData.year);
-      formDataToSend.append('price', formData.price);
-      formDataToSend.append('carType', formData.carType);
-      formDataToSend.append('engine', formData.engine);
-      formDataToSend.append('engineType', formData.engineType);
-      formDataToSend.append('fuelAvg', formData.fuelAvg);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('image', formData.image);
-
-      const response = await axios.post(url, formDataToSend, {
-        headers: {
-          'token': JSON.parse(localStorage.getItem('token')),
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      console.log(response.data); 
-      alert("Car has been Successfully added!")
-    } catch (error) {
-      console.error(error);
+    if (formData.make == null || formData.model == null || formData.year == null || formData.price == null || formData.carType == null || formData.engine == null || formData.engineType == null || formData.fuelAvg == null || formData.description == null || formData.image == null) {
+      console.log(formData);
+      alert("Please Fill all fields")
+    }else{
+      const url = 'http://localhost:3001/car/create';
+      try {
+        const formDataToSend = new FormData();
+        formDataToSend.append('make', formData.make);
+        formDataToSend.append('model', formData.model);
+        formDataToSend.append('year', formData.year);
+        formDataToSend.append('price', formData.price);
+        formDataToSend.append('carType', formData.carType);
+        formDataToSend.append('engine', formData.engine);
+        formDataToSend.append('engineType', formData.engineType);
+        formDataToSend.append('fuelAvg', formData.fuelAvg);
+        formDataToSend.append('description', formData.description);
+        formDataToSend.append('image', formData.image);
+  
+        const response = await axios.post(url, formDataToSend, {
+          headers: {
+            'token': JSON.parse(localStorage.getItem('token')),
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log(response.data); 
+        alert("Car has been Successfully added!")
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
   
@@ -104,7 +108,7 @@ function AddCarPart({ user, setuser }) {
             <Form.Group controlId="year">
               <Form.Label>Year</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 placeholder="e.g., 2023"
                 value={formData.year}
                 onChange={handleChange}
@@ -113,7 +117,7 @@ function AddCarPart({ user, setuser }) {
             <Form.Group controlId="price">
               <Form.Label>Price $</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 placeholder="e.g., 10000.00"
                 value={formData.price}
                 onChange={handleChange}

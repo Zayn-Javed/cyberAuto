@@ -29,7 +29,6 @@ function App() {
       <Route exact path="/addcarpart" element={<AddCarPart user={user} setuser={setuser}/>}/>
       <Route exact path="/carpartmanagement" element={<DeleteCarPartComponet user={user} setuser={setuser}/>}/>
       <Route exact path="/ordermanagement" element={<OrderManagement user={user} setuser={setuser}/>}/>
-
     </Routes>
   </Router>
   );
