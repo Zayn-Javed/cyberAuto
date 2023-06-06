@@ -1,6 +1,4 @@
 import HomeComponent from './components/HomeComponent';
-import QuizComponent from './components/QuizComponent';
-import ReviewComponent from './components/ReviewComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
@@ -11,6 +9,8 @@ import  DeleteCar  from './components/CarComponents/DeleteCarComponent'
 import AddCar from './components/CarComponents/AddCarComponent'
 import AddCarPart from './components/CarPartComponents/AddCarPartComponent'
 import DeleteCarPartComponet from './components/CarPartComponents/DeleteCarPartComponent';
+import OrderManagement from './components/OrderComponents/OrderManagementComponent';
+
 function App() {
   const [user, setuser] = useState(null)
   useEffect(() => {
@@ -33,6 +33,8 @@ function App() {
       <Route exact path="/carmanagement" element={<DeleteCar user={user} setuser={setuser}/>}/>
       <Route exact path="/addcarpart" element={<AddCarPart user={user} setuser={setuser}/>}/>
       <Route exact path="/carpartmanagement" element={<DeleteCarPartComponet user={user} setuser={setuser}/>}/>
+      <Route exact path="/ordermanagement" element={<OrderManagement user={user} setuser={setuser}/>}/>
+
     </Routes>
   </Router>
   );

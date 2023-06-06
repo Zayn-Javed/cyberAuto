@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Footer from '../GeneralComponent/FooterComponent';
-import CardGroup from 'react-bootstrap/CardGroup';
 import "../../customStyles.css";
 import AppNav from '../GeneralComponent/NavComponent';
-import pic from "../../images/car.png"
 import Image from 'react-bootstrap/Image';
-import top from '../../images/toop.jpg'
-import gif from '../../images/des.png'
+import top from '../../images/otop.jpeg'
+import gif from '../../images/ORDERS.png'
 import { useNavigate } from 'react-router-dom'
-import AddCar from './AddCarComponent';
 
 function TopImg() {
     return (
@@ -22,8 +16,8 @@ function TopImg() {
         <Image src={top} alt="Background Image" fluid className="background-image" />
         <div className="centered-text st">
             <br/>
-          <h2 >Welcome to Car Par Management</h2>
-          <p>Now Add, Delete and View the Car as you want!</p>
+          <h2 >Welcome to Car Orders Management</h2>
+          <p>Now reveive, decline and view the Car Orders as you want!</p>
         </div>
       </div>
     )
@@ -40,9 +34,6 @@ function DeleteCarComponet({user , setuser}) {
   
       }
     }, [Lgout]);
-    const toAdd= ()=>{
-        hist("/addcar")
-    }
 
   useEffect(() => {
     fetchCars();
@@ -92,13 +83,10 @@ function DeleteCarComponet({user , setuser}) {
                         Description
                     </h3>
                     <p className='just'>
-                        Through CyberAutos, now you can add any vehicle which will be available to a large number 
-                        of the customer around the world! So, Hurryup and add the vehicle. You can also make the vehicle
-                        unavailable if you want through this page of CyberAutos easily.
+                        Through CyberAutos, now you can receive or decline any vehicle order which are placed by a large number 
+                        of the customer around the world! So, Hurryup and manage your vehicle orders. You can also make the vehicle
+                        unavailable if you want through CyberAutos easily.
                     </p>
-                    <div className='img-f'>
-                        <Button variant="outline-success" onClick={toAdd}>Add Car</Button>
-                    </div>
                 </div>
                 <Container className=" upback scrollable-container bo">
                     <h2 className="text-light text-center mb-4">Car List</h2>

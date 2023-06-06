@@ -244,7 +244,6 @@ hr{
 
 }
 
-
 .top-img-container {
     position: relative;
     width: 100%;
@@ -269,4 +268,11 @@ hr{
     height: 35%;
     width: 100%;
     background-color: #000000a1;
+  }
+
+  .gf{
+    display: flex;
+    justify-content: end;
+    text-align: center;
+    padding-right: 11%;
   }

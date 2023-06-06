@@ -104,10 +104,9 @@ function DeleteCarPartComponet({user , setuser}) {
             <div className='fflex'>
                 <TopImg/>
             </div>
-            <br/>
-            <Container className="mt-5 search">
-                <Row>
-                    <Col sm={4}>
+            <Container className="mt-5">
+                <Row className='gf'>
+                    <Col className='cooo' sm={6}>
                     <Form className="d-flex">
                         <Form.Control
                         type="search"
