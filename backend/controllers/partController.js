@@ -67,9 +67,7 @@ let viewPart = async (req,res)=>{
         res.status(500).json({
           message: 'Server Error'
         });
-      }
-
-
+    }
 
 }
 
@@ -103,28 +101,36 @@ let findPart = async (req,res)=>{
 
 
 let searchPart = async (req,res)=>{
+    console.log(req.body);
     try {
-      const { make, partType, description, price } = req.body;
-  
+      const {partType} = req.body;
       // Construct a search query based on the provided parameters
       const searchQuery = {};
-      if (make) {
-        searchQuery.make = { $regex: make, $options: 'i' };
-      }
       if (partType) {
         searchQuery.partType = { $regex: partType, $options: 'i' };
       }
-      if (description) {
-        searchQuery.$text = { $search: description };
-      }
-      if (price) {
-        searchQuery.price = { $gte: parseFloat(price) };
-      }
       // Perform the search using the constructed query
       const parts = await carPartsModel.find(searchQuery);
-      res.status(200).json(parts);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to search for parts' });
+        const partsWithImages = await Promise.all(parts.map(async (part) => {
+            const images = await Promise.all(part.images.map(async (image) => {
+            const imageURL = await cloudinary.url(image);
+            return imageURL;
+            }));
+    
+            return {
+            ...part._doc,
+            images: images
+            };
+        }));
+        res.status(200).json({
+            message: 'Success',
+            parts: partsWithImages
+        });
+        } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Failed to search for parts'
+        });
     }
 }
   

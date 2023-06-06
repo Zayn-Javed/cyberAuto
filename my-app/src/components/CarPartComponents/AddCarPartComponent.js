@@ -13,20 +13,19 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { useNavigate } from 'react-router-dom'
 
-function AddCarPart({user , setuser}) {
+function AddCarPart({ user, setuser }) {
   const [make, setMake] = useState('');
   const [price, setPrice] = useState('');
   const [partType, setPartType] = useState('Head Lights');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
   const [Lgout, setLgout] = useState(false);
-  const hist = useNavigate()
-    useEffect(() => {
-        if(!user){
-        hist("/login")
-        }else{
+  const hist = useNavigate();
 
-        }
+  useEffect(() => {
+    if (!user) {
+      hist("/login");
+    }
   }, [Lgout]);
 
   const handleMakeChange = (e) => {
@@ -54,26 +53,25 @@ function AddCarPart({user , setuser}) {
     const url = 'http://localhost:3001/car-parts/create';
 
     try {
-      const data = {
-        make,
-        price,
-        partType,
-        description,
-        image
-      };
-      console.log(data);
-      const response = await axios.post(url, data, {
+      const formData = new FormData();
+      formData.append('make', make);
+      formData.append('price', price);
+      formData.append('partType', partType);
+      formData.append('description', description);
+      formData.append('image', image);
+
+      const response = await axios.post(url, formData, {
         headers: {
           token: JSON.parse(localStorage.getItem('token')),
-          'Content-Type': 'application/json'
         }
       });
-
-      console.log(response.data); // Handle the response data as per your requirement
+      console.log(response.data); 
+      alert("Car Part is Successfully added")
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <div className="scrollable-container backGround app-container">
       <AppNav user={user} setuser={setuser} Lgout={Lgout} setLgout={setLgout}/>
@@ -86,51 +84,52 @@ function AddCarPart({user , setuser}) {
               Add Car Part
             </h2>
             <br />
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="basic-addon1">Make</InputGroup.Text>
+            <Form.Group controlId="make" className="mb-3">
+              <Form.Label>Make</Form.Label>
               <Form.Control
-                id="make"
+                type="text"
                 placeholder="e.g., Denso"
-                aria-label="Make"
-                aria-describedby="basic-addon1"
                 value={make}
                 onChange={handleMakeChange}
               />
-            </InputGroup>
-            <InputGroup className="mb-3">
-              <InputGroup.Text>Price $</InputGroup.Text>
+            </Form.Group>
+            <Form.Group controlId="price" className="mb-3">
+              <Form.Label>Price $</Form.Label>
               <Form.Control
-                id="price"
-                aria-label="Price of Car"
+                type="number"
+                placeholder="Enter price"
                 value={price}
                 onChange={handlePriceChange}
               />
-              <InputGroup.Text>.00</InputGroup.Text>
-            </InputGroup>
-            <InputGroup>
-              <InputGroup.Text>Description</InputGroup.Text>
+            </Form.Group>
+            <Form.Group controlId="description" className="mb-3">
+              <Form.Label>Description</Form.Label>
               <Form.Control
-                id="description"
                 as="textarea"
-                aria-label="Description"
+                placeholder="Enter description"
                 value={description}
                 onChange={handleDescriptionChange}
               />
-            </InputGroup>
-            <Form.Label htmlFor="basic-url">Part Type</Form.Label>
-            <Form.Select
-              id="partType"
-              aria-label="Part Type"
-              value={partType}
-              onChange={handlePartTypeChange}
-            >
-              <option value="Head Lights">Head Lights</option>
-              <option value="Alloy Rims">Alloy Rims</option>
-              <option value="Android System">Android System</option>
-            </Form.Select>
+            </Form.Group>
+            <Form.Group controlId="partType" className="mb-3">
+              <Form.Label>Part Type</Form.Label>
+              <Form.Control
+                as="select"
+                value={partType}
+                onChange={handlePartTypeChange}
+              >
+                <option value="Head Lights">Head Lights</option>
+                <option value="Alloy Rims">Alloy Rims</option>
+                <option value="Android System">Android System</option>
+              </Form.Control>
+            </Form.Group>
             <Form.Group controlId="image" className="mb-3">
               <Form.Label>Image</Form.Label>
-              <Form.Control type="file" onChange={handleImageChange} accept="image/*" />
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
             </Form.Group>
             <div className='centered'>
                 <Button  variant="outline-success"type="submit" size="lg">
@@ -148,21 +147,3 @@ function AddCarPart({user , setuser}) {
 }
 
 export default AddCarPart;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

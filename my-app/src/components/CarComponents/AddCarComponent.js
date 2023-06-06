@@ -13,7 +13,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { useNavigate } from 'react-router-dom'
 
-function AddCar({user , setuser}) {
+function AddCarPart({ user, setuser }) {
   const [formData, setFormData] = useState({
     make: '',
     model: '',
@@ -27,14 +27,13 @@ function AddCar({user , setuser}) {
     image: null
   });
   const [Lgout, setLgout] = useState(false);
-    const hist = useNavigate()
-    useEffect(() => {
-        if(!user){
-        hist("/login")
-        }else{
-
-        }
+  const hist = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      hist("/login");
+    }
   }, [Lgout]);
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
@@ -60,130 +59,126 @@ function AddCar({user , setuser}) {
       formDataToSend.append('fuelAvg', formData.fuelAvg);
       formDataToSend.append('description', formData.description);
       formDataToSend.append('image', formData.image);
-      console.log(localStorage.getItem('token'));
+
       const response = await axios.post(url, formDataToSend, {
         headers: {
-          "token": JSON.parse(localStorage.getItem('token')),
+          'token': JSON.parse(localStorage.getItem('token')),
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log(response.data); // Handle the response data as per your requirement
+      console.log(response.data); 
+      alert("Car has been Successfully added!")
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   return (
     <div className="scrollable-container backGround app-container">
       <AppNav user={user} setuser={setuser} Lgout={Lgout} setLgout={setLgout}/>
       <br />
       <br />
-      <Container className=''>
-        <div className='inner'>
-          <Form className='most-inner upback' onSubmit={handleSubmit}>
-            <h2 className='centered'>
-              Add Car
-            </h2>
-            <br />
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="basic-addon1">Make</InputGroup.Text>
+      <Container className="">
+        <div className="inner">
+          <Form className="most-inner upback" onSubmit={handleSubmit}>
+            <h2 className="centered">Add Car</h2>
+            <Form.Group controlId="make">
+              <Form.Label>Make</Form.Label>
               <Form.Control
-                id="make"
+                type="text"
                 placeholder="e.g., Mercedes"
-                aria-label="Make"
-                aria-describedby="basic-addon1"
                 value={formData.make}
                 onChange={handleChange}
               />
-            </InputGroup>
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="basic-addon1">Model</InputGroup.Text>
+            </Form.Group>
+            <Form.Group controlId="model">
+              <Form.Label>Model</Form.Label>
               <Form.Control
-                id="model"
+                type="text"
                 placeholder="e.g., Benz S350"
-                aria-label="Model"
-                aria-describedby="basic-addon1"
                 value={formData.model}
                 onChange={handleChange}
               />
-            </InputGroup>
-            <InputGroup className="mb-3">
-              <InputGroup.Text>Year</InputGroup.Text>
+            </Form.Group>
+            <Form.Group controlId="year">
+              <Form.Label>Year</Form.Label>
               <Form.Control
-                id="year"
-                aria-label="Year"
+                type="text"
+                placeholder="e.g., 2023"
                 value={formData.year}
                 onChange={handleChange}
               />
-              <InputGroup.Text>e.g., 2023</InputGroup.Text>
-            </InputGroup>
-            <InputGroup className="mb-3">
-              <InputGroup.Text>Price $</InputGroup.Text>
+            </Form.Group>
+            <Form.Group controlId="price">
+              <Form.Label>Price $</Form.Label>
               <Form.Control
-                id="price"
-                aria-label="Price of Car"
+                type="text"
+                placeholder="e.g., 10000.00"
                 value={formData.price}
                 onChange={handleChange}
               />
-              <InputGroup.Text>.00</InputGroup.Text>
-            </InputGroup>
-            <InputGroup className="mb-3">
+            </Form.Group>
+            <Form.Group controlId="carType">
+              <Form.Label>Car Type</Form.Label>
               <Form.Control
-                id="engine"
+                as="select"
+                value={formData.carType}
+                onChange={handleChange}
+              >
+                <option value="SUV">SUV</option>
+                <option value="Luxury">Luxury</option>
+                <option value="Jeep">Jeep</option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="engine">
+              <Form.Label>Engine</Form.Label>
+              <Form.Control
+                type="text"
                 placeholder="Engine"
-                aria-label="Engine"
-                aria-describedby="basic-addon2"
                 value={formData.engine}
                 onChange={handleChange}
               />
-              <InputGroup.Text id="basic-addon2">cc</InputGroup.Text>
-            </InputGroup>
-            <InputGroup className="mb-3">
-              <InputGroup.Text>Fuel Avg</InputGroup.Text>
+            </Form.Group>
+            <Form.Group controlId="engineType">
+              <Form.Label>Engine Type</Form.Label>
               <Form.Control
-                id="fuelAvg"
-                aria-label="Fuel Avg"
+                as="select"
+                value={formData.engineType}
+                onChange={handleChange}
+              >
+                <option value="Diesel">Diesel</option>
+                <option value="Gasoline">Gasoline</option>
+                <option value="CNG">CNG</option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="fuelAvg">
+              <Form.Label>Fuel Avg</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="e.g., 10"
                 value={formData.fuelAvg}
                 onChange={handleChange}
               />
-              <InputGroup.Text>KM/L</InputGroup.Text>
-            </InputGroup>
-            <InputGroup>
-              <InputGroup.Text>Description</InputGroup.Text>
+            </Form.Group>
+            <Form.Group controlId="description">
+              <Form.Label>Description</Form.Label>
               <Form.Control
-                id="description"
                 as="textarea"
-                aria-label="Description"
+                rows={3}
                 value={formData.description}
                 onChange={handleChange}
               />
-            </InputGroup>
-            <Form.Label htmlFor="basic-url">Car Type</Form.Label>
-            <Form.Select
-              id="carType"
-              aria-label="Car Type"
-              value={formData.carType}
-              onChange={handleChange}
-            >
-              <option value="SUV">SUV</option>
-              <option value="Luxury">Luxury</option>
-              <option value="Jeep">Jeep</option>
-            </Form.Select>
-            <Form.Label htmlFor="basic-url">Engine Type</Form.Label>
-            <Form.Select
-              id="engineType"
-              aria-label="Engine Type"
-              value={formData.engineType}
-              onChange={handleChange}
-            >
-              <option value="Diesel">Diesel</option>
-              <option value="Gasoline">Gasoline</option>
-              <option value="CNG">CNG</option>
-            </Form.Select>
-            <Form.Group controlId="image" className="mb-3">
-              <Form.Label>Image</Form.Label>
-              <Form.Control type="file" onChange={handleImageChange} accept="image/*" />
             </Form.Group>
+            <Form.Group controlId="image">
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </Form.Group>
+            <br/>
             <div className='centered'>
                 <Button  variant="outline-success"type="submit" size="lg">
                 Submit
@@ -199,4 +194,4 @@ function AddCar({user , setuser}) {
   );
 }
 
-export default AddCar;
+export default AddCarPart;

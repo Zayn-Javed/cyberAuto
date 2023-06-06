@@ -17,10 +17,20 @@ import { useNavigate } from 'react-router-dom'
 import AddCar from './AddCarComponent';
 
 function TopImg() {
-    return <div className='ttop'><Image src={top} fluid /></div>;
+    return (
+        <div className="top-img-container ttop">
+        <Image src={top} alt="Background Image" fluid className="background-image" />
+        <div className="centered-text st">
+            <br/>
+          <h2 >Welcome to Car Par Management</h2>
+          <p>Now add, Delete and view the Car parts as you want!</p>
+        </div>
+      </div>
+    )
 }
 function DeleteCarComponet({user , setuser}) {
     const [Lgout, setLgout] = useState(false);
+    const [cars, setCars] = useState([ ]);
 
     const hist = useNavigate()
     useEffect(() => {
@@ -33,86 +43,20 @@ function DeleteCarComponet({user , setuser}) {
     const toAdd= ()=>{
         hist("/addcar")
     }
-  const [cars, setCars] = useState([
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
 
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-
-    },
-    {
-        "car._id": 123132,
-        "make": "toyo",
-        "model": "adcadc",
-        "price": 123,
-        "description": "vsdfsdaz  saiuhfgvusaf  asuhedf gawshufhh uawhe fuawhe fhwa h uthw qht wweahgo fuwahoiguhwaoihg oiwhg o hwr"
-
-    },
-  ]);
-
-//   useEffect(() => {
-//     fetchCars();
-//   }, []);
+  useEffect(() => {
+    fetchCars();
+  }, []);
 
   const fetchCars = async () => {
     try {
-      const response = await axios.get('your-api-endpoint-url');
-      setCars(response.data);
+        const response = await axios.get('http://localhost:3001/car/view-cars', {
+            headers: {
+                'token': JSON.parse(localStorage.getItem('token')),
+            }
+        });
+        console.log(response.data.cars);
+        setCars(response.data.cars);
     } catch (error) {
       console.error(error);
     }
@@ -120,8 +64,12 @@ function DeleteCarComponet({user , setuser}) {
 
   const handleDelete = async (carId) => {
     try {
-      await axios.delete(`your-api-endpoint-url/${carId}`);
-      fetchCars();
+        await axios.delete(`http://localhost:3001/car/delete-car/${carId}`, {
+            headers: {
+              'token': JSON.parse(localStorage.getItem('token')),
+            },
+        });
+        fetchCars();
     } catch (error) {
       console.error(error);
     }
@@ -159,7 +107,7 @@ function DeleteCarComponet({user , setuser}) {
                             <div key={car._id} >
                                 <div className='ffflex '>
                                     <div className='im-div'>
-                                    <img className='carp' src={pic}/>
+                                    <img className='carp' src={car.images[0]}/>
                                     </div>
                                     <div className='pad'>
                                         <h4>{car.make}{" "}{car.model}</h4>

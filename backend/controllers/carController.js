@@ -2,11 +2,28 @@ const jwt = require("jsonwebtoken")
 const carModel = require('../models/carModel');
 const multer = require ('multer')
 const { param } = require("../routes/userRoute");
+const cloudinary= require('../cloudnary')
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+
+
+
+// Configure multer storage for Cloudinary
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: 'cars', // Specify the folder where images will be stored in Cloudinary
+      allowed_formats: ['jpg', 'jpeg', 'png']
+    }
+});
+
+  // Create multer instance with the Cloudinary storage
+const upload = multer({ storage: storage });
 
 
 let addCar = (req,res)=>{
-
     let {make, model, year, price, carType, engine, engineType, fuelAvg, description} = req.body
+    const image = req.file.filename;
     let car=new carModel({
         make, 
         model, 
@@ -16,13 +33,14 @@ let addCar = (req,res)=>{
         engine, 
         engineType, 
         fuelAvg,
-        Images: req.files.map(file => file.path),
+        images: [image],
         description,
     })
     car.save().then( (car)=>{
         if(!car){
             res.status(400).json( { "message":"car cannot be added"})
         }else{
+            console.log(car);
             res.status(200).json({"message":"success", "car": car})
         }
     }).catch(err=>{
@@ -33,38 +51,30 @@ let addCar = (req,res)=>{
 
 
 
-const storage = multer.diskStorage({
-    destination:(req , file , cb)=>{
-        cb(null , 'uploads')
-    },
-    filename:(req , file , cb)=>{
-        cb(null ,Date.now()+file.originalname)
-    }
-})
-
-
-const filter = (req , file , cb)=>{
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-        cb(null , true)
-    }else{
-        cb(new Error("UnSupported file") , false)
-    }
-}
-
-
-const upload = multer({
-   storage:storage,
-   fileFilter:filter,
-    limits:1024*1024*10
-})
-
 
 let viewCar = async (req,res)=>{
     try {
         const cars = await carModel.find();
-        res.json(cars);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to retrieve cars' });
+        const carsWithImages = await Promise.all(cars.map(async (car) => {
+          const images = await Promise.all(car.images.map(async (image) => {
+            const imageURL = await cloudinary.url(image);
+            return imageURL;
+          }));
+          return {
+            ...car._doc,
+            images: images
+          };
+        }));
+        console.log(carsWithImages);
+        res.status(200).json({
+          message: 'Success',
+          cars: carsWithImages
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({
+          message: 'Server Error'
+        });
     }
 }
 
