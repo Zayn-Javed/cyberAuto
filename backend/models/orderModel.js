@@ -20,5 +20,4 @@ const carOrderSchema = new mongoose.Schema({
 });
 
 const CarOrder = mongoose.model('CarOrder', carOrderSchema);
-
 module.exports = CarOrder;

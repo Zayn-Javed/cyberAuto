@@ -31,6 +31,7 @@ let confirmOrder = async (req,res)=>{
 let viewOrder = async (req, res) => {
   orderModel.find({ approved: undefined })
     .then((orders) => {
+      console.log(orders);
       res.status(200).json(orders);
     })
     .catch((error) => {
