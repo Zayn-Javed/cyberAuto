@@ -156,7 +156,7 @@ function DeleteCarPartComponet({user , setuser}) {
                                     </div>
                                     <div className='pad'>
                                         <h4>{car.make}{" "}{car.partType}</h4>
-                                        <h5>{car.price}</h5>
+                                        <h5>{"$ "}{car.price}</h5>
                                         <p className='just'>{car.description}</p>
                                         <Button variant="outline-danger" onClick={() => handleDelete(car._id)}>Delete</Button>
                                     </div>
